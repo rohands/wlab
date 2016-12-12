@@ -1,0 +1,16 @@
+<?php
+	extract($_POST);
+	if($user1)
+	{
+		$file = fopen("user1.txt","a");
+		fwrite($file,$msg);
+		fclose($file);
+	}
+	else
+	{
+		$file = fopen("user2.txt","a");
+		fwrite($file,$msg);
+		fclose($file);		
+	}
+?> 
+	

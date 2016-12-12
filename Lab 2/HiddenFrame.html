@@ -1,0 +1,54 @@
+<html>
+	<head>
+		<title> HIDDEN FRAMES </title>
+		
+		<script type="text/javascript">
+		  
+		function checkUSN()  
+		    {
+
+			USN = document.getElementById("usn");
+		if(USN.value == "")
+	{
+		USN.value = "INVALID USN";
+		return;
+	}	
+	
+	helper = document.getElementById("helper");
+	helper.src = "http://localhost/checkUSN.php?usn="  + USN.value;
+			}
+
+function setValues(values)
+{
+	
+	sp1 = document.getElementById("name");
+	sp2 = document.getElementById("dept");
+	sp3 = document.getElementById("gpa");
+	
+	if(values=="INVALID USN")
+	   {
+	   document.getElementById("usn").value = values;
+	   return;
+	   }
+	   
+	sp1.value = values.split(";")[1];			
+	sp2.value = values.split(";")[2];
+	sp3.value = values.split(";")[3];
+	
+}
+			
+		  
+		  
+		</script>
+	</head>
+	
+	
+	<body>
+		<label>USN:<input type="text" id="usn" onblur="checkUSN()"/></label><br />
+		<label>NAME:<input type="text" id="name" readonly /></label><br />
+		<label>DEPARTMENT:<input type="text" id="dept" readonly /></label><br />
+		<label>GPA:<input type="text" id="gpa" readonly /></label><br />
+		<input type="button" value="SAVE TO SERVER"/><br />
+		<iframe id="helper" noresize width="100" height="100" style="display:none;"/>
+	</body>
+</html>

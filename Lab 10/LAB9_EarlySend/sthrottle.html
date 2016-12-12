@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Submission Throttling EARLY SEND</title>
+<style type="text/css">
+img
+{
+	width: 20px;
+	height:20px;
+}
+</style>
+<script type="text/javascript">
+function val()
+{
+	if(document.getElementById("usr").value == "")
+	{
+		alert("User name cannot be empty");
+		return false;
+	}
+	else
+		return true;
+}
+
+function validate()
+{
+	if(document.getElementById("usr").value == "")
+		return;
+	
+	url = "http://localhost/subtearly/validate.php?usr=";
+	url += document.getElementById("usr").value;
+
+	xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = processInfo;
+	xhr.open("GET",url, true);
+	xhr.send();
+}
+
+function processInfo()
+{
+	if(xhr.readyState == 4 && xhr.status == 200)
+	{
+		sp = document.getElementById("errortext");
+		img = document.getElementById("errimg");
+		if(xhr.responseText == "valid")
+		{
+			sp.innerHTML = "User name is available";
+			img.style.display = "none";
+			
+		}
+		else
+		{
+			img.style.display = "";
+			sp.innerHTML = "User name already taken";
+		}
+	}
+}
+</script>
+</head>
+<body>
+<form action="http://localhost/subtearly/validate.php" method="GET" onsubmit="return val()">
+<label>User Name:<input type="text" id="usr" placeholder="name here" onblur="validate()"/></label>
+<img id="errimg" src="error.jpg" style="display:none"/>
+<span id="errortext"></span><br/>
+<label>Email id:<input type="email" id="mail" placeholder="email here"/></label><br/>
+<label>Date of Birth:<input type="date" id="dob" placeholder="DOB here"/></label><br/>
+<input type="submit" value="REGISTER"/>
+</form>
+</body>
+</html>

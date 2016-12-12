@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Counselling</title>
+    <script type="text/javascript">
+    	function update() {
+    		var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    seats.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "updateAvailability.php", true);
+            xhr.send();
+            setTimeout(update, 5000);
+    	};
+    	update();
+
+        function register() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    seats.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "updateAvailability.php?watch=" + watch.options[watch.selectedIndex].value + "&racquet=" + racquet.options[racquet.selectedIndex].value, true);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <label for="watch">Watch</label>
+    <select name="watch" id="watch">
+        <option value="0">ROLEX</option>
+        <option value="1">RADO</option>
+    </select>
+    <br>
+    <label for="racquet">Racquet</label>
+    <select name="racquet" id="racquet">
+        <option value="0">YONEX</option>
+        <option value="1">VILSON</option>
+    </select>
+    <br>
+    <button onclick="register()">Submit</button>
+    <p id="seats"></p>
+</body>
+</html>

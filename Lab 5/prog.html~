@@ -1,0 +1,42 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+</script>
+<script>
+
+$(document).ready(function(){
+	cnt=1;
+	$("#next").click(function(){
+	cnt=cnt+1;
+	if(cnt!=1)
+		$("#prev").prop('disabled',false);
+	if(cnt==5)
+		$("#next").prop('disabled',true);
+	$("#jdiv").slideToggle('slow');
+	$("#jdiv").slideToggle('slow');	
+	$("#img").attr("src","images/"+cnt+".jpg");
+	});
+	$("#prev").click(function(){
+	cnt=cnt-1;
+	if(cnt==1)
+		$("#prev").prop('disabled',true);
+	if(cnt!=5)
+		$("#next").prop('disabled',false);
+	$("#jdiv").slideToggle('slow');
+	$("#img").attr("src","images/"+cnt+".jpg");
+	
+	
+
+	});
+});
+	
+</script>
+</head>
+<body>
+<div id="jdiv">
+<img id="img" src="images/1.jpg">
+</div>
+<button id="prev">Prev</button>
+<button id="next">Next</button>
+</body>
+</html>

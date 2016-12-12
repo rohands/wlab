@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+function monitor()
+{
+if (!!window.EventSource) {
+    var source = new EventSource("http://localhost/SEE/comet/server.php");
+} else {
+    alert("Your browser does not support Server-sent events! Please upgrade it!");
+}
+	message=document.getElementById("data");
+	chatwindow=document.getElementById("chatwindow");	
+
+	ev=new EventSource("http://localhost/SEE/comet/server.php");
+	ev.addEventListener("messagerecvd",updateDivGetMsg,false);
+	ev.onerror=function(){
+		alert("Some error occured");	
+	}
+	
+}
+function updateDivGetMsg(event)
+{
+	newdiv = document.createElement("div");
+	newdiv.innerHTML = "<strong>Friend:</strong>" + event.data;
+	document.getElementById("chatwindow").appendChild(newdiv);	
+}
+
+function sendToDb()
+{
+	msgobj = {user1 : message.value+"\n"};
+	$.post("http://localhost/SEE/comet/savetodb.php", msgobj, updateDivUser1);
+}
+function updateDivUser1()
+{
+	message=document.getElementById("data");
+	chatwindow=document.getElementById("chatwindow");
+	if(message.value!="")
+	{
+		line = document.createElement("div");
+		line.innerHTML="<strong>Me:</strong>"+message.value;
+		chatwindow.appendChild(line);
+		
+	}	
+}
+</script>
+<body onload="monitor()">
+<div align="center">
+<div id="chatwindow" style="width:400px;height:400px;border:2px solid red;">
+</div>
+<div>
+<label>Type message</label>
+<input type="text" id="data"/>
+<input type="button" id="sub" value="SEND" onclick="sendToDb()"/>
+</div>
+</div>
+</body>
+</html>
+

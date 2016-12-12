@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			body {
+				background-image: url("blue-and-white-wallpaper.jpg");
+				background-size: cover;
+				color: #000066;
+			}
+
+			div {
+				font-size: 40px;
+				font-style: bold;
+				width: 60%;
+			}
+		</style>
+		<script type="text/javascript">
+			function init() {
+				refreshCounts();
+			}
+
+			function refreshCounts() {
+				var xhr = new XMLHttpRequest();
+				xhr.addEventListener("readystatechange", function() {
+					if(xhr.readyState == 4 && xhr.status == 200) {
+						countsArr = xhr.responseText.split(";");
+						counts.innerHTML = "PESIT: CSE - " + countsArr[0] + ", ECE - " + countsArr[1] + " <br>RVCE: CSE - " + countsArr[2] + ", ECE - " + countsArr[3];
+					}
+				});
+				xhr.open("GET", "getCounts.php", true);
+				xhr.send();
+				setTimeout(refreshCounts, 1000);
+			}
+
+			function writeCount() {
+				var xhr = new XMLHttpRequest();
+				xhr.addEventListener("readystatechange", function() {
+					if(xhr.readyState == 4 && xhr.status == 200) {
+						if(xhr.responseText == "invalid")
+							alert("There are no more seats for " + dept.value + " in " + college.value);
+					}
+				});
+				xhr.open("GET", "setCounts.php?college=" + college.value + "&dept=" + dept.value, true);
+				xhr.send();
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<center>
+			<div id="counts"></div>
+			<h1>Make your Choice</h1>
+			<label>Hall Ticket Number: <input type="text"/></label><br>
+			<label>College: 
+				<select id="college">
+					<option>PESIT</option>
+					<option>RVCE</option>
+				</select>
+			</label><br>
+			<label>Department: 
+				<select id="dept">
+					<option>ComputerScience</option>
+					<option>Electronics</option>
+				</select>
+			</label><br>
+			<input type="button" value="Submit" onclick="writeCount()" />
+		</center>
+	</body>
+</html>

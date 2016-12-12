@@ -1,0 +1,4 @@
+Biotechnology;http://localhost/final/lab3_multi/bt.html
+Computer Science;http://localhost/final/lab3_multi/cs.html
+Electrical;http://localhost/final/lab3_multi/ec.html
+Information Science;http://localhost/final/lab3_multi/is.html

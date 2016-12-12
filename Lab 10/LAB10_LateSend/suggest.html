@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>LATE SEND IMPLEMENTATION</title>
+
+	<script type="text/javascript">
+	xhr = new XMLHttpRequest();
+	
+	function fetchPlayers()
+	{
+		player = document.getElementById("plpart");
+		container = document.getElementById("container");
+	
+		if(player.value == "")
+		{
+			container.innerHTML = "";
+		}
+		
+		else
+		{
+				xhr.onreadystatechange = showPlayers;
+				xhr.open("GET", "http://localhost/getplayers.php?pl=" + player.value, true);
+				xhr.send();
+			
+		}
+		
+	}
+	
+	function showPlayers()
+	{
+		if(xhr.readyState == 4 && xhr.status == 200)
+		{
+			var players = JSON.parse(xhr.responseText);
+				container.innerHTML = "";
+				for(var j=0;j < players.length; j++)
+				{
+					var newdiv = document.createElement("div");
+					newdiv.innerHTML = players[j];
+					container.appendChild(newdiv);
+				}
+				
+			}
+		}
+	
+
+	</script>
+</head>
+
+
+<body>
+<table border="0">
+	<tr>
+		<td>FAV PLAYER:</td>
+		<td><input type="text" id="plpart" size="50" onkeyup="fetchPlayers()"/></td>
+		<td><input type="button" value="GET PLAYER DETAILS" onclick=""/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><div id="container"></div></td>
+	</tr>
+</table>
+</body>
+</html>

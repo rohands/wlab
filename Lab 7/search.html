@@ -1,0 +1,51 @@
+<html>
+<head>
+<script type="text/javascript">
+function init()
+{
+	xhr=new XMLHttpRequest();
+	query=document.getElementById("srch");
+	results=document.getElementById("results");
+}
+function fetchResults()
+{
+	qstring=query.value.split(" ").join("+");
+	xhr.onreadystatechange=addtodiv;
+	xhr.open("GET","http://localhost/SEE/rsssearch/search.php?q="+qstring,true);
+	xhr.send();
+}
+function addtodiv()
+{
+	
+	if(xhr.readyState==4 && xhr.status==200)
+	{
+		root=xhr.responseXML.documentElement;
+		items=root.getElementsByTagName("item");
+		results.innerHTML="";
+		for(i=0;i<items.length;i++)
+		{
+			var newdiv = document.createElement("div");
+			item=items[i];
+			link=item.getElementsByTagName("link")[0];
+			title=item.getElementsByTagName("title")[0];
+			a=document.createElement("a");
+			a.href=link.firstChild.nodeValue;
+			a.innerHTML=title.firstChild.nodeValue;
+			newdiv.appendChild(a);
+			results.appendChild(newdiv);
+		}
+	}
+}
+</script>
+</head>
+<body onload="init()">
+	<div>	
+		<label>Search</label>
+		<input type="text" id="srch"/><br>
+		<input type="button" value="Search" onclick="fetchResults()">
+	</div>
+	<div id="results">
+	</div>
+</body>
+
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Counselling</title>
+    <script type="text/javascript">
+    	function update() {
+    		var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    seats.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "updateAvailability.php", true);
+            xhr.send();
+            setTimeout(update, 5000);
+    	};
+    	update();
+
+        function register() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    seats.innerHTML = xhr.responseText;
+                }
+            };
+            xhr.open("GET", "updateAvailability.php?clg=" + college.options[college.selectedIndex].value + "&dept=" + department.options[department.selectedIndex].value, true);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <label for="college">College</label>
+    <select name="college" id="college">
+        <option value="0">RVCE</option>
+        <option value="1">PESIT</option>
+    </select>
+    <br>
+    <label for="department">Department</label>
+    <select name="department" id="department">
+        <option value="0">CSE</option>
+        <option value="1">ISE</option>
+    </select>
+    <br>
+    <button onclick="register()">Submit</button>
+    <p id="seats"></p>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>CRUD Web Service</title>
+		<style type="text/css">
+			*
+			{
+				text-align: center;
+			}
+		</style>
+		<script type="text/javascript">
+			var getXhr, postXhr, putXhr, delXhr;
+			function getFile()
+			{
+				fname = document.getElementById("fname");
+				if(fname.value == "")
+				{
+					alert("Please enter a file name to get contents for");
+					return;
+				}
+				
+				getXhr = new XMLHttpRequest();
+				getXhr.onreadystatechange = refresh;
+				getXhr.open("GET", "http://localhost/rest/webService.php?fname="+fname.value, true);
+				getXhr.send(null);
+			}
+			function refresh()
+			{
+				if(getXhr.readyState == 4)
+				{
+					document.getElementById("txt").value = getXhr.responseText;
+				}	
+			}			
+			function createFile()
+			{
+				postXhr = new XMLHttpRequest();
+				var txt = document.getElementById("txt").value;
+				fname = document.getElementById("fname").value;
+				if(txt == "")
+				{
+					alert("Enter some text please");
+					return;
+				}
+				postXhr.open("POST", "http://localhost/rest/webService.php", true);
+				postXhr.onreadystatechange = createRefresh;
+				postXhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				postXhr.send("txt=" + txt + "&" + "fname=" + fname);
+			}
+			function createRefresh()
+			{
+				if(getXhr.readyState == 4)
+				{
+					document.getElementById("txt").value = postXhr.responseText;
+				}	
+			}
+			function updateFile()
+			{
+				putXhr = new XMLHttpRequest();
+				var txt = document.getElementById("txt").value;
+				fname = document.getElementById("fname").value;
+				putXhr.open("PUT", "http://localhost/rest/webService.php", true);
+				putXhr.onreadystatechange = updateRefresh;
+				putXhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				putXhr.send(fname + ";" + txt);
+			}
+			function updateRefresh()
+			{
+				if(getXhr.readyState == 4)
+				{
+					document.getElementById("txt").value = putXhr.responseText;
+				}	
+			}
+			function deleteFile()
+			{
+				fname = document.getElementById("fname").value;
+				delXhr = new XMLHttpRequest();
+				delXhr.open("DELETE", "http://localhost/rest/webService.php", true);
+				delXhr.onreadystatechange = deleteRefresh;
+				delXhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				delXhr.send(fname);
+			}
+			function deleteRefresh()
+			{
+				if(delXhr.readyState == 4)
+				{
+					document.getElementById("txt").value = delXhr.responseText;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<h2>A simple web service</h2>
+		<label>File Name:<input type="text" id = "fname"/></label>
+		<input type="button" value="Get File Contents" onclick="getFile()" /><br/>
+		<textarea id="txt" rows="20" cols="50"></textarea><br />
+		<input type="button" value="Create" onclick="createFile()"/>
+		<input type="button" value="Update" onclick="updateFile()" />
+		<input type="button" value="Delete" onclick="deleteFile()" />
+	</body>
+</html>

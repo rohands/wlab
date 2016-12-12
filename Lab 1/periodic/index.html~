@@ -1,0 +1,129 @@
+<html>
+<head>
+<script>	
+function init()
+{
+	ctr=2;
+	xhr=new XMLHttpRequest();
+	items=document.getElementById("itemsleft");
+	flag=setTimeout(refreshSeats,ctr*500);
+}
+
+function refreshSeats()
+{
+	xhr.onreadystatechange=updateseats;
+	xhr.timeout=6000;
+	xhr.ontimeout=sendrequest;
+	xhr.open("GET","item.txt",true);
+	xhr.send();
+}
+function sendrequest()
+{
+	//reset timer
+	xhr.onreadystatechange=updateseats;
+	xhr.open("GET","http://localhost/SEE/periodic/getitems.php",true);
+	xhr.send();
+	ctr=1;
+}
+function updateseats()
+{
+	if(xhr.readyState==4 && xhr.status==200)
+	{
+		res=xhr.responseText;
+		items.innerHTML="";
+		itemleft=res.split(";");
+		for(i=0;i<itemleft.length;i++)
+		{
+			td = document.createElement("td");
+			td.innerHTML = itemleft[i];
+			items.appendChild(td);			
+		}
+		ctr=1;
+		flag = setTimeout(refreshSeats, ctr * 500);
+	}
+	else if(xhr.readyState == 4 && xhr.status != 200)
+	{
+		ctr *= 2;
+		flag = setTimeout(refreshSeats, ctr * 500);
+	}
+}
+function selectionResult(selected)
+{
+	if(selected == 1)
+	{
+		alert('Item saved!');
+		document.getElementById("submitButton").disabled = "false";
+	}
+	else
+	{
+		alert('Seats over! Choose something else!');
+		document.getElementById("submitButton").disabled = "false";
+	}
+}
+function disableButton()
+{
+	document.getElementById("submitButton").disabled = "true";
+}
+</script>
+	<style>
+		table
+		{
+			height: 20%;
+			width: 80%;
+			position: relative;
+			left: 10%;
+		}
+		th, td
+		{
+			border: 1px solid black;
+			border-collapse: collapse;
+			font-size: 24px;
+			color: #ec1337;
+			text-align: center;
+		}
+		label
+		{
+			font-size: 18px;
+			display: block;
+			padding: 6px;
+		}
+		input, select
+		{
+			position: absolute;
+			left: 200px;
+		}
+	</style>
+</head>
+<body onload="init()">
+	<div>
+		<table>
+		<tr>
+			<th colspan="4">Availabilty</th>
+		</tr>
+		<tr>
+			<th>Rado</th>
+			<th>Rolex</th>
+			<th>Yonex</th>
+			<th>Wilson</th>
+		</tr>
+		<tr id="itemsleft">
+		</tr>
+		</table>
+	</div>
+	<hr/>
+	<div>
+		<form method="POST" action="chooseItem.php" target="if"  onsubmit="disableButton()">
+			<label>Items:
+				<select name="opts">
+					<option value="0">Rado</option>
+					<option value="1">Rolex</option>
+					<option value="2">Yonex</option>
+					<option value="3">Wilson</option>
+				</select>
+			</label>
+			<label><input type="submit" id="submitButton" value="Choose item"/></label>
+		</form>	
+	</div>
+		<iframe name="if" style="display: none">
+		</iframe>			
+</body>

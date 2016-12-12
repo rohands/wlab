@@ -1,0 +1,4 @@
+<?php
+	header("Content-type:text/xml");
+	extract($_GET);
+	$qstring=implode("+",explode(" ",$q));
